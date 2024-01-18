@@ -9,8 +9,8 @@ jobs:
       steps: 
       - uses: actions/checkout@v1
       - name: run one-line script
-      - run: echo hello there
+      - run: echo "hello there"
       - name: run multi-line script
       - run: |
-        echo add other actions
-        echo test and deploy etc
+        echo "add other actions"
+        echo "test and deploy etc"
