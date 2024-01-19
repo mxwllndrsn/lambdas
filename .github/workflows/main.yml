@@ -1,18 +1,28 @@
-name: CI
+name: S3 CI
 
-on: [push]
+on: 
+  push:
+    branches:
+      - master
 
 jobs:
   build:
       runs-on: ubuntu-latest
 
       steps: 
-      - uses: actions/checkout@v1
-      - name: run one-line script
-        run: echo "hello there"
-      - name: run multi-line script
-        run: |
-          echo "add other actions"
-          echo "test and deploy etc"
-          echo "success" >> $GITHUB_STEP_SUMMARY
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: S3 Creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.TESTFUNCTION_S3_BUCKET_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.TESTFUNCTION_S3_BUCKET_ACCESS_SECRET }}
+          aws-region: 
+
+      - name: S3 Upload
+        run: aws s3 ./src s3://testfunction-lambda-deploy-artifact-bucket/src
+
+      - name: Echo Success
+        run: echo "success" >> $GITHUB_STEP_SUMMARY
 
