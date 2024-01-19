@@ -27,7 +27,7 @@ jobs:
           aws-region: us-west-2
 
       - name: S3 Upload
-        run: aws s3 ./src s3://testfunction-lambda-deploy-artifact-bucket/src --recursive
+        run: aws s3 cp ./src s3://testfunction-lambda-deploy-artifact-bucket/src --recursive
 
       - name: Echo Success
         run: echo "success" >> $GITHUB_STEP_SUMMARY
