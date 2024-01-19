@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-          
+
       - name: Checkout Repository
         uses: actions/checkout@v2
 
@@ -27,7 +27,7 @@ jobs:
           aws-region: us-west-2
 
       - name: S3 Upload
-        run: aws s3 ./src s3://testfunction-lambda-deploy-artifact-bucket/src
+        run: aws s3 ./src s3://testfunction-lambda-deploy-artifact-bucket/src --recursive
 
       - name: Echo Success
         run: echo "success" >> $GITHUB_STEP_SUMMARY
