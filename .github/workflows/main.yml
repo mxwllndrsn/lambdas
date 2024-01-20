@@ -25,8 +25,8 @@ jobs:
       - name: Deploy
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.TESTFUNCTION_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.TESTFUNCTION_ACCESS_SECRET }}
+          aws-access-key-id: ${{ secrets.TESTFUNCTION_LAMBDA_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.TESTFUNCTION_LAMBDA_ACCESS_SECRET }}
           aws-region: us-west-2
       - run: aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
 
