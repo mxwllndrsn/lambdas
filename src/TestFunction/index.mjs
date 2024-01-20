@@ -3,7 +3,7 @@
 export const handler = async (event) => {
   // TODO implement
   let message = {
-    response: 's3 continuous integration',
+    response: 'lambda continuous integration',
     currDatetime: new Date()
   }
   let currDatetime = new Date();
