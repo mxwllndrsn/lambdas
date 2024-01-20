@@ -22,7 +22,7 @@ jobs:
       - name: Package
         run: |
           cd ./src/TestFunction
-          zip -r function.zip .
+          zip -r function.zip ./
 
       - name: Deploy
         uses: aws-actions/configure-aws-credentials@v1
