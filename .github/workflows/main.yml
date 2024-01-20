@@ -1,4 +1,4 @@
-name: S3 CI
+name: Lambda CI
 
 on: 
   push:
@@ -11,23 +11,24 @@ jobs:
 
       steps: 
 
-      - name: Node Setup
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: S3 Creds
+      - name: Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Package
+        run: zip -r function.zip ./src/TestFunction
+
+      - name: Deploy
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.TESTFUNCTION_S3_BUCKET_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.TESTFUNCTION_S3_BUCKET_ACCESS_SECRET }}
+          aws-access-key-id: ${{ secrets.TESTFUNCTION_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.TESTFUNCTION_ACCESS_SECRET }}
           aws-region: us-west-2
-
-      - name: S3 Upload
-        run: aws s3 cp ./src s3://testfunction-lambda-deploy-artifact-bucket/src --recursive
+      - run: aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
 
       - name: Echo Success
         run: echo "success" >> $GITHUB_STEP_SUMMARY
