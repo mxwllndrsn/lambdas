@@ -20,7 +20,9 @@ jobs:
           node-version: '20'
 
       - name: Package
-        run: zip -r function.zip ./src/TestFunction/index.mjs
+        run: |
+          cd ./src/TestFunction
+          zip -r function.zip .
 
       - name: Deploy
         uses: aws-actions/configure-aws-credentials@v1
