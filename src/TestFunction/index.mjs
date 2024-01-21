@@ -9,7 +9,7 @@ export const handler = async (event) => {
   let currDatetime = new Date();
   const response = {
     statusCode: 200,
-    body: JSON.stringify(message),
+    body: 'hello',
   };
   return response;
 };
