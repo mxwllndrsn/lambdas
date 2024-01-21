@@ -1,15 +1,25 @@
 // index
 
 export const handler = async (event) => {
-  // TODO implement
-  let message = {
-    response: 'lambda continuous integration',
-    currDatetime: new Date()
-  }
-  let currDatetime = new Date();
+  const html = `
+    <html>
+        <head>
+            <title>xlk subsidiary</title>
+        </head>
+        <body>
+            <p>This site is powered by AWS Lambda</p>
+            <p>Current Time: ${new Date().toLocaleString()}</p>
+        </body>
+    </html>
+  `;
+
   const response = {
     statusCode: 200,
-    body: JSON.stringify(message),
+    headers: {
+      'content-type': 'text/html'
+    },
+    body: html,
   };
-  return 'hello';//response;
+
+  return response;
 };
