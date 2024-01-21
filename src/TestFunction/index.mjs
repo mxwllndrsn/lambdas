@@ -2,13 +2,15 @@
 
 export const handler = async (event) => {
 
-  if(event.headers) {
+  const userAgent = event.headers['User-Agent'] || event.headers['user-agent'];
+
+  if(userAgent && userAgent.startsWith('curl/')) {
     return {
       statusCode: 200,
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify({ currDatetime: new Date().toISOString(), eventHeaders: event.headers })
+      body: JSON.stringify({ currDatetime: new Date().toISOString()})
     }
   } else {
     const html = `
