@@ -8,7 +8,7 @@ export const handler = async (event) => {
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify({ currDatetime: new Date().toISOString() })
+      body: JSON.stringify({ currDatetime: new Date().toISOString(), eventHeaders: event.headers })
     }
   } else {
     const html = `
