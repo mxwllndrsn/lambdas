@@ -4,7 +4,7 @@ export const handler = async (event) => {
 
   const userAgent = event.headers['User-Agent'] || event.headers['user-agent'];
 
-  if(userAgent && userAgent.startsWith('curl/')) {
+  if(userAgent && userAgent.startsWith('curl/')) { // if cli
     return {
       statusCode: 200,
       headers: {
@@ -12,7 +12,7 @@ export const handler = async (event) => {
       },
       body: JSON.stringify({ currDatetime: new Date().toISOString()})
     }
-  } else {
+  } else { // else web
     const html = `
     <html>
         <head>
