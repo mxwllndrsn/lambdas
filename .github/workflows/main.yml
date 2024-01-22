@@ -70,7 +70,8 @@ jobs:
 
       - name: Dependencies
         run: |
-          pip install -r src/xlk_flask/requirements.txt
+          pip install -r ./src/xlk_flask/requirements.txt
+          pip install aws-wsgi boto3
 
       - name: Package
         run: |
