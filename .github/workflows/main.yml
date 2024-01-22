@@ -7,6 +7,7 @@ on:
     paths:
       - './src/TestFunction/.'
       - './src/xlk_flask/.'
+      - '.github/workflows/main.yml'
 
 jobs:
   deploy-node:
