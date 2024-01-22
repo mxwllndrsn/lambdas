@@ -68,7 +68,7 @@ jobs:
       
       - name: Diff Check
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- ./src/xlk-flask/* | grep -qE '(\.py)$'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- src/xlk-flask/* | grep -qE '\.py$'; then
             echo "changes_detected=true" >> $GITHUB_OUTPUT
           else
             echo "changes_detected=false" >> $GITHUB_OUTPUT
