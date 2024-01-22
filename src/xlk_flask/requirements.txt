@@ -1,13 +1,4 @@
-blinker==1.7.0
-click==8.1.7
-colorama==0.4.6
+aws_wsgi==0.2.7
+boto3==1.34.19
+botocore==1.34.19
 Flask==3.0.1
-itsdangerous==2.1.2
-Jinja2==3.1.3
-jmespath==1.0.1
-MarkupSafe==2.1.4
-python-dateutil==2.8.2
-s3transfer==0.10.0
-six==1.16.0
-urllib3==2.0.7
-Werkzeug==3.0.1
