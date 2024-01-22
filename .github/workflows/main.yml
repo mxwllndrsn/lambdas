@@ -94,7 +94,7 @@ jobs:
           aws-region: us-west-2
 
       - name: Deploy
-        if: steps.code-changes.outputs.changes_detected == 'true'
+        if: env.changes_detected == 'true'
         run: aws lambda update-function-code --function-name xlk-user-button-counter-increment --zip-file fileb://function.zip
   
       - name: Echo Success
