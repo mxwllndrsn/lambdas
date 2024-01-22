@@ -29,7 +29,7 @@ def increment():
 def get_count():
     username = request.args.get('username')
     try: 
-        response = table.get_item(Key = {}'Username': username})
+        response = table.get_item(Key = {'Username': username})
         if 'Item' in response:
             return jsonify(resposne['Item']), 200
         else: 

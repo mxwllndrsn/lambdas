@@ -4,9 +4,12 @@ on:
   push:
     branches:
       - master
+    paths:
+      - './src/TestFunction/.'
+      - './src/xlk_flask/.'
 
 jobs:
-  build-and-deploy:
+  deploy-node:
       runs-on: ubuntu-latest
 
       steps: 
@@ -19,12 +22,22 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Diff Check
+        id: code-changes
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- ./src/TestFunction/. | grep -qE '(\.mjs)$'; then
+            echo "::set-output name=changes_detected::true"
+          else
+            echo "::set-output name=changes_detected::false"
+          fi
+
       - name: Package
         run: |
           cd ./src/TestFunction
           zip -r $GITHUB_WORKSPACE/function.zip ./.
 
       - name: Deploy
+        if: steps.code-changes.outputs.changes_detected == 'true'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.TESTFUNCTION_LAMBDA_ACCESS_KEY }}
