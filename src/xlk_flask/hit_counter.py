@@ -7,7 +7,7 @@ from botocore.exceptions import ClientError
 
 app = Flask(__name__)
 dynamodb = boto3.resource('dynamodb')
-table = dynambodb.Table('UserCounters')
+table = dynamodb.Table('UserCounters')
 
 
 @app.route('/counter', methods=['POST'])
@@ -20,7 +20,7 @@ def increment():
             ExpressionAttributeValues = {':inc': 1},
             ReturnValues = 'UPDATED_NEW'
         )
-        return jsonify(resposne['Attributes']), 200
+        return jsonify(response['Attributes']), 200
     except ClientError as e:
         return jsonify({'error': e.response['Error']['Message']}), 500
     
