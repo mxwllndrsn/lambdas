@@ -46,5 +46,47 @@ jobs:
       - run: aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
 
       - name: Echo Success
-        run: echo "success" >> $GITHUB_STEP_SUMMARY
+        run: echo "NODE success" >> $GITHUB_STEP_SUMMARY
 
+  deploy-flask:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Python
+        uses: actions/setup-python@v2
+        with: 
+          python-version: '3.8'
+      
+      - name: Diff Check
+        id: code-changes
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- ./src/xlk-flask/. | grep -qE '(\.py)$'; then
+            echo "::set-output name=changes_detected::true"
+          else
+            echo "::set-output name=changes_detected::false"
+          fi
+
+      - name: Dependencies
+        if: steps.code-changes.outputs.changes_detected == 'true'
+        run: |
+          pip install -r requirements.txt
+          pip install aws-wsgi boto3
+
+      - name: Package
+        run: |
+          cd ./src/xlk_flask
+          zip -r $GITHUB_WORKSPACE/function.zip ./.
+  
+      - name: Deploy
+        if: steps.code-changes.outputs.changes_detected == 'true'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.XLK_COUNTER_LAMBDA_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.XLK_COUNTER_LAMBDA_ACCESS_SECRET }}
+          aws-region: us-west-2
+      - run: aws lambda update-function-code --function-name xlk-user-button-counter-increment --zip-file fileb://function.zip
+
+      - name: Echo Success
+        run: echo "FLASK success" >> $GITHUB_STEP_SUMMARY
