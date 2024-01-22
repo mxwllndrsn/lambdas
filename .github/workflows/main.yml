@@ -26,7 +26,6 @@ jobs:
           node-version: '20'
 
       - name: Diff Check
-        id: code-changes
         run: |
           if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- ./src/TestFunction/* | grep -qE '(\.mjs)$'; then
             echo "changes_detected=true" >> $GITHUB_OUTPUT
@@ -40,7 +39,7 @@ jobs:
           zip -r $GITHUB_WORKSPACE/function.zip ./.
 
       - name: Connect
-        if: steps.code-changes.outputs.changes_detected == 'true'
+        if: env.changes_detected == 'true'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.TESTFUNCTION_LAMBDA_ACCESS_KEY }}
@@ -48,7 +47,7 @@ jobs:
           aws-region: us-west-2
 
       - name: Deploy
-        if: steps.code-changes.outputs.changes_detected == 'true'
+        if: env.changes_detected == 'true'
         run: aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
 
       - name: Echo Success
@@ -68,7 +67,6 @@ jobs:
           python-version: '3.8'
       
       - name: Diff Check
-        id: code-changes
         run: |
           if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- ./src/xlk-flask/* | grep -qE '(\.py)$'; then
             echo "changes_detected=true" >> $GITHUB_OUTPUT
@@ -77,7 +75,7 @@ jobs:
           fi
 
       - name: Dependencies
-        if: steps.code-changes.outputs.changes_detected == 'true'
+        if: env.changes_detected == 'true'
         run: |
           pip install -r requirements.txt
           pip install aws-wsgi boto3
@@ -88,7 +86,7 @@ jobs:
           zip -r $GITHUB_WORKSPACE/function.zip ./.
   
       - name: Connect
-        if: steps.code-changes.outputs.changes_detected == 'true'
+        if: env.changes_detected == 'true'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.XLK_COUNTER_LAMBDA_ACCESS_KEY }}
