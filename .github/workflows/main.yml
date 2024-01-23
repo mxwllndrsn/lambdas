@@ -52,8 +52,7 @@ jobs:
 
       - name: Deploy
         if: env.changes_detected == 'true'
-        run: |
-          aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
+        run: aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
           if [ $? -eq 0 ]; then
             echo "NODE lambda upload success" >> $GITHUB_STEP_SUMMARY
           else
@@ -107,8 +106,7 @@ jobs:
 
       - name: Deploy
         if: env.changes_detected == 'true'
-        run: |
-          aws lambda update-function-code --function-name xlk-user-button-counter-increment --zip-file fileb://function.zip
+        run: aws lambda update-function-code --function-name xlk-user-button-counter-increment --zip-file fileb://function.zip
           if [ $? -eq 0 ]; then
             echo "FLASK lambda upload success" >> $GITHUB_STEP_SUMMARY
           else
