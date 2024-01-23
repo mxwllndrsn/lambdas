@@ -51,9 +51,13 @@ jobs:
       - name: Deploy
         if: env.changes_detected == 'true'
         run: aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
+          if [ $? -eq 0 ]; then
+            echo "NODE lambda upload success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "NODE lambda upload failure" >> $GITHUB_STEP_SUMMARY
 
-      - name: Echo Success
-        run: echo "NODE success" >> $GITHUB_STEP_SUMMARY
+      - name: Exit Status
+        run: echo "NODE workflow complete" >> $GITHUB_STEP_SUMMARY
 
   deploy-flask:
     runs-on: ubuntu-latest
