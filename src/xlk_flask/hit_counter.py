@@ -38,6 +38,6 @@ def get_count():
         return jsonify({'error': e.response['Error']['Message']}), 500 
     
 
-# aws wsgi lambda handler
+# aws
 from aws_wsgi import make_lambda_handler
 lambda_handler = make_lambda_handler(app)
