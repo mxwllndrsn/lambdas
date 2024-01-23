@@ -20,11 +20,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
       - name: Diff Check
         run: |
           if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- ./src/TestFunction/ | grep -q .; then
@@ -35,7 +30,14 @@ jobs:
             echo "NODE change detected false" >> $GITHUB_STEP_SUMMARY
           fi
 
+      - name: Node
+        if: env.changes_detected == 'true'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
       - name: Package
+        if: env.changes_detected == 'true'
         run: |
           cd ./src/TestFunction
           zip -r $GITHUB_WORKSPACE/function.zip ./.
@@ -50,7 +52,8 @@ jobs:
 
       - name: Deploy
         if: env.changes_detected == 'true'
-        run: aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
+        run: |
+          aws lambda update-function-code --function-name TestFunction --zip-file fileb://function.zip
           if [ $? -eq 0 ]; then
             echo "NODE lambda upload success" >> $GITHUB_STEP_SUMMARY
           else
@@ -66,24 +69,36 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      
+      - name: Diff Check
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- ./src/xlk_flask/ | grep -q .; then
+            echo "changes_detected=true" >> "$GITHUB_ENV"
+            echo "FLASK change detected true" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "changes_detected=false" >> "$GITHUB_ENV"
+            echo "FLASK change detected false" >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: Python
+        if: env.changes_detected == 'true'
         uses: actions/setup-python@v2
         with: 
           python-version: '3.8'
-      
-# need to implement diff check
 
       - name: Dependencies
+        if: env.changes_detected == 'true'
         run: |
           pip install -r ./src/xlk_flask/requirements.txt
 
       - name: Package
+        if: env.changes_detected == 'true'
         run: |
           cd ./src/xlk_flask
           zip -r $GITHUB_WORKSPACE/function.zip ./.
   
       - name: Connect
+        if: env.changes_detected == 'true'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.XLK_COUNTER_LAMBDA_ACCESS_KEY }}
@@ -91,7 +106,13 @@ jobs:
           aws-region: us-west-2
 
       - name: Deploy
-        run: aws lambda update-function-code --function-name xlk-user-button-counter-increment --zip-file fileb://function.zip
+        if: env.changes_detected == 'true'
+        run: |
+          aws lambda update-function-code --function-name xlk-user-button-counter-increment --zip-file fileb://function.zip
+          if [ $? -eq 0 ]; then
+            echo "FLASK lambda upload success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "FLASK lambda upload failure" >> $GITHUB_STEP_SUMMARY
   
-      - name: Echo Success
-        run: echo "FLASK success" >> $GITHUB_STEP_SUMMARY
+      - name: Exit Status
+        run: echo "FLASK workflow complete" >> $GITHUB_STEP_SUMMARY
