@@ -93,13 +93,14 @@ jobs:
       - name: Dependencies
         if: env.changes_detected == 'true'
         run: |
-          pip install -r ./src/xlk_flask/requirements.txt
+          pip install -r ./src/xlk_flask/requirements.txt -t ./src/xlk_flask/package
 
       - name: Package
         if: env.changes_detected == 'true'
         run: |
           cd ./src/xlk_flask
-          zip -r $GITHUB_WORKSPACE/function.zip ./.
+          zip -r $GITHUB_WORKSPACE/function.zip ./package
+          zip -g $GITHUB_WORKSPACE/fucntion.zip ./*.py
   
       - name: Connect
         if: env.changes_detected == 'true'

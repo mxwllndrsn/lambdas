@@ -31,7 +31,7 @@ def get_count():
     try: 
         response = table.get_item(Key = {'Username': username})
         if 'Item' in response:
-            return jsonify(resposne['Item']), 200
+            return jsonify(response['Item']), 200
         else: 
             return jsonify({'error': 'User not found'}), 404
     except ClientError as e:
