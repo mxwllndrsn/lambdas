@@ -100,7 +100,7 @@ jobs:
         run: |
           cd ./src/xlk_flask
           zip -r $GITHUB_WORKSPACE/function.zip ./package
-          zip -g $GITHUB_WORKSPACE/fucntion.zip ./*.py
+          zip -g $GITHUB_WORKSPACE/function.zip ./*.py
   
       - name: Connect
         if: env.changes_detected == 'true'
