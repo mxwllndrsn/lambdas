@@ -1,3 +1,6 @@
+## detect code changes in TestFunction and xlk_flask
+## and conditionally upload to lambda services 
+
 name: Lambda CI
 
 on: 
