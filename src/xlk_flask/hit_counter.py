@@ -38,5 +38,5 @@ def get_count():
     
 
 # aws
-from awsgi import make_lambda_handler
+from apig_wsgi import make_lambda_handler
 lambda_handler = make_lambda_handler(app)

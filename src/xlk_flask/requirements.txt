@@ -1,4 +1,4 @@
-aws_wsgi==0.2.7
+apig_wsgi==2.18.0
 boto3==1.34.19
 botocore==1.34.19
 Flask==3.0.1
