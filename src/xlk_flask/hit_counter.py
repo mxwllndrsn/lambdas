@@ -1,12 +1,18 @@
 ## xlk button hit counter 
 
-from flask import Flask, request, jsonify
 import boto3
+import logging
+from flask import Flask, request, jsonify
 from botocore.exceptions import ClientError
+from apig_wsgi import make_lambda_handler
 
 app = Flask(__name__)
+
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('UserCounters')
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 @app.route('/xlk-user-counter-API', methods=['POST'])
@@ -37,6 +43,8 @@ def get_count():
         return jsonify({'error': e.response['Error']['Message']}), 500 
     
 
-# aws
-from apig_wsgi import make_lambda_handler
 lambda_handler = make_lambda_handler(app)
+
+def lambda_logger(event, context):
+    logger.info('event: '+ json.dumps(event))
+    return lambda_handler(event, context)
