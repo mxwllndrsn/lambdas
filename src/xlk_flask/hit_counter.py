@@ -9,7 +9,7 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('UserCounters')
 
 
-@app.route('/counter', methods=['POST'])
+@app.route('/xlk-user-counter-API', methods=['POST'])
 def increment():
     username = request.json.get('username')
     try:
@@ -24,7 +24,7 @@ def increment():
         return jsonify({'error': e.response['Error']['Message']}), 500
     
 
-@app.route('/counter', methods=['GET'])
+@app.route('/xlk-user-counter-API', methods=['GET'])
 def get_count():
     username = request.args.get('username')
     try: 
