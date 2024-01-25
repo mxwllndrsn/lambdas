@@ -38,6 +38,9 @@ def index():
         except ClientError as e:
             return jsonify({'error': e.response['Error']['Message']}), 500 
 
+@app.errorhandler(404)
+def invalid_route(e):
+    return "oh god oh fuck"
 
 def lambda_handler(event, context):
     return awsgi.response(app, event, context)
