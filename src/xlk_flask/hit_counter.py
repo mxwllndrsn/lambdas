@@ -2,6 +2,8 @@
 
 import boto3
 import awsgi
+import json
+import logging
 from flask import Flask, request, jsonify
 from botocore.exceptions import ClientError
 
@@ -10,6 +12,8 @@ app = Flask(__name__)
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('UserCounters')
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 @app.route('/', methods=['POST'])
 def index():
@@ -52,4 +56,5 @@ def invalid_route(e):
     return "oh god oh fuck"
 
 def lambda_handler(event, context):
+    logger.info(json.dumps(event))
     return awsgi.response(app, event, context)
