@@ -6,6 +6,7 @@ import json
 import logging
 from flask import Flask, request, jsonify
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
 
 app = Flask(__name__)
 
