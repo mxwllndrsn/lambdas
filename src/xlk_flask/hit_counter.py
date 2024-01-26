@@ -27,7 +27,7 @@ def index():
         try:
             response = table.update_item(
                 Key = {'Username': username},
-                UpdateExpression = 'ADD Counter :inc',
+                UpdateExpression = 'ADD total_hit :inc',
                 ExpressionAttributeValues = {':inc': 1},
                 ReturnValues = 'UPDATED_NEW'
             )
