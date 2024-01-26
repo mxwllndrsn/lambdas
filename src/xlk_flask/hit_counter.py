@@ -16,6 +16,10 @@ def index():
     ## increment count
     if request.method == 'POST':
         username = request.json.get('username')
+
+        if not username: 
+            return jsonify({'error': 'Username parameter is required'}), 400  
+        
         try:
             response = table.update_item(
                 Key = {'Username': username},
@@ -26,9 +30,14 @@ def index():
             return jsonify(response['Attributes']), 200
         except ClientError as e:
             return jsonify({'error': e.response['Error']['Message']}), 500
+        
     ## get count
     elif request.method == 'GET':
-        username = request.args.get('username')
+        username = request.args.get('username')    
+
+        if not username:  
+            return jsonify({'error': 'Username parameter is required'}), 400
+        
         try: 
             response = table.get_item(Key = {'Username': username})
             if 'Item' in response:
