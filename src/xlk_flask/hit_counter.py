@@ -15,7 +15,7 @@ table = dynamodb.Table('UserCounters')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-@app.route('/', methods=['POST'])
+@app.route('/xlk-user-button-counter-increment', methods=['POST'])
 def index():
     ## increment count
     if request.method == 'POST':
