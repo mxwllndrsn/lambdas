@@ -43,7 +43,10 @@ def index():
             return jsonify({'error': 'Username parameter is required'}), 400
         
         try: 
-            response = table.get_item(Key = {'Username': username})
+            response = table.query(
+                IndexName="xlkUserButtonHitCounter-username-index",
+                KeyConditionExpression=Key('Username').eq('admin')
+            )
             if 'Item' in response:
                 return jsonify(response['Item']), 200
             else: 
