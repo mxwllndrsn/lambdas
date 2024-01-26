@@ -10,7 +10,7 @@ from botocore.exceptions import ClientError
 app = Flask(__name__)
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('UserCounters')
+table = dynamodb.Table('xlkUserButtonHitCounter')
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
