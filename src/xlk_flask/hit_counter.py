@@ -11,7 +11,7 @@ from boto3.dynamodb.conditions import Key
 app = Flask(__name__)
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('xlk_user_counter')
+table = dynamodb.Table('xlk-user-counter')
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
