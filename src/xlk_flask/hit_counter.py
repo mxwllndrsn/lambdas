@@ -51,6 +51,15 @@ def get_count():
             return jsonify({'error': 'User not found'}), 404
     except ClientError as e:
         return jsonify({'error': e.response['Error']['Message']}), 500 
+    
+    
+@app.route('/xlk-user-button-counter-increment/total', methods=['GET'])
+def get_total():
+    try: 
+        response = table.item_count
+        return jsonify(response), 200
+    except ClientError as e:
+        return jsonify({'error': e.response['Error']['Message']}), 500 
 
 
 @app.errorhandler(404)
